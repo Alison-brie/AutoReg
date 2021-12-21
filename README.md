@@ -12,6 +12,7 @@ To tackle the aforementioned problems, this paper proposes an automated registra
 
 ![Alt text](pipeline.png)
 
+<img src=pipline.png width=50%>
 
 # Requirements
 
