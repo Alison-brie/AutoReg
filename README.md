@@ -10,7 +10,7 @@ Recent learning-based methods render fast registration by leveraging deep networ
 However, it needs intensive labor and extensive experience to manually design the network architecture and tuning training objectives for multiple types of medical data.
 To tackle the aforementioned problems, this paper proposes an automated registration learning framework that searches both architectures and their corresponding training objectives, friendly to users for medical image analysis. 
 
-![Alt text](pipeline-mia.png)
+![Alt text](pipeline.png)
 
 
 # Requirements
