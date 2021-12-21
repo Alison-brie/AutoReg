@@ -2,7 +2,7 @@
 
 The code is still being sorted......
 
-This is the official code for "Jointly Optimizing Architecture and Training Objective for Medical Image Registration"
+This is the official code for "Jointly Optimizing Architecture and Training Objective for Medical Image Registration" \\
 Conventional registration methods optimize an objective function independently for each pair of images, time-consuming for large data.
 Recent learning-based methods render fast registration by leveraging deep networks to directly learn the spatial transformation fields between the source and target images. 
 However, it needs intensive labor and extensive experience to manually design the network architecture and tuning training objectives for multiple types of medical data.
