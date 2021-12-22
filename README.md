@@ -10,13 +10,13 @@ However, it needs intensive labor and extensive experience to manually design th
 To tackle the aforementioned problems, this paper proposes an automated registration learning framework that searches both architectures and their corresponding training objectives, friendly to users for medical image analysis. 
 
 <div align=center>
-<img src=pipline.png width=40% />
+<img src=png/pipline.png width=40% />
 </div>
 
 Our framework generalizes both architecture search and objective learning by introducing a broader search space. On one hand, architecture search is a special case where optimization uses fixed objectives. On the other hand, training objectives learning is a special case with fixed architecture. So that we may discover network architectures and loss functions that both be proper with registration scenarios. The detailed pipeline is shown as follows.
 
 
-![Alt text](pipeline.png)
+![Alt text](png/pipeline.png)
 
 
 
