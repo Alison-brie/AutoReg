@@ -86,6 +86,6 @@ if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument("--gpu", type=str, default='0', help="gpu id")
     parser.add_argument("--data_dir", type=str, default='data/9-T2toT1_test_data_with_mask.npz')
-    parser.add_argument("--model_file", type=str, default='MPRNet-T2-to-T1-singlemodel/99.ckpt')
+    parser.add_argument("--model_file", type=str, default='MPRNet-T2-to-T1-singlemodel/399.ckpt')
     test(**vars(parser.parse_args()))
 
