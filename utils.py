@@ -169,16 +169,3 @@ def load_nii_by_name_norm(vol_name, seg_name):
 
     return tuple(return_vals)
 
-
-def show_progress(epoch, batch, batch_total, **kwargs):
-    message = f'\r{epoch} epoch: [{batch}/{batch_total}'
-    for key, item in kwargs.items():
-        message += f', {key}: {item}'
-    sys.stdout.write(message+']')
-    print(message+']')
-    if not os.path.exists('Model/Bi-model/model-7'):
-        os.mkdir('Model/Bi-model/model-7')
-    with open('Model/Bi-model/model-7/loss.txt', 'a') as f:
-        f.write(message+']'+ '\n')
-    sys.stdout.flush()
-
