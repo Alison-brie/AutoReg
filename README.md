@@ -8,11 +8,8 @@ to well design registration energy or to carefully tune network architectures fo
 aforementioned problems, this paper proposes an automated learning registration algorithm (AutoReg) that cooperatively optimizes both architectures and their corresponding training objectives, enable non-computer experts, e.g., medical/clinical users, to conveniently find off-the-shelf registration algorithms for diverse scenarios. 
 
 <div align=center>
-<img src=png/pipline-1.png width=95% />
+<img src=png/pipline-1.png width=100% />
 </div>
-
-
-![Alt text](png/pipline-2.png)
 
 
 
