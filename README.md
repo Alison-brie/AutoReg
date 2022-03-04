@@ -1,19 +1,15 @@
 # AutoReg
 
-The code is still being sorted......
-
-This is the official code for "Jointly Optimizing Architecture and Training Objective for Medical Image Registration" 
+This is the official code for "Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions" 
 
 
-Recent learning-based methods render fast registration by leveraging deep networks to directly learn the spatial transformation fields between the source and target images. 
-However, it needs intensive labor and extensive experience to manually design the network architecture and tuning training objectives for multiple types of medical data.
-To tackle the aforementioned problems, this paper proposes an automated registration learning framework that searches both architectures and their corresponding training objectives, friendly to users for medical image analysis. 
+A successful registration algorithm, either derived from conventional energy optimization or deep networks requires tremendous efforts from computer experts
+to well design registration energy or to carefully tune network architectures for the specific type of medical data. To tackle the
+aforementioned problems, this paper proposes an automated learning registration algorithm (AutoReg) that cooperatively optimizes both architectures and their corresponding training objectives, enable non-computer experts, e.g., medical/clinical users, to conveniently find off-the-shelf registration algorithms for diverse scenarios. 
 
 <div align=center>
 <img src=png/pipline.png width=45% />
 </div>
-
-Our framework generalizes both architecture search and objective learning by introducing a broader search space. On one hand, architecture search is a special case where optimization uses fixed objectives. On the other hand, training objectives learning is a special case with fixed architecture. So that we may discover network architectures and loss functions that both be proper with registration scenarios. The detailed pipeline is shown as follows.
 
 
 ![Alt text](png/pipeline.png)
