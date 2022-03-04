@@ -12,7 +12,7 @@ aforementioned problems, this paper proposes an automated learning registration 
 </div>
 
 
-![Alt text](png/pipeline-2.png)
+![Alt text](png/pipline-2.png)
 
 
 
