@@ -69,7 +69,7 @@ class SpatialTransformer(nn.Module):
 
     def forward(self, src, flow):
         """
-        Push the src and flow through the spatial transform block
+        Push the src_loss and flow through the spatial transform block
             :param src: the original moving image
             :param flow: the output from the U-Net
         """
@@ -318,3 +318,51 @@ class Concat_Cell(nn.Module):
             x = torch.cat((src, tgt), 1)
             x = self.enc_2[2](self.enc_2[1](self.enc_2[0](x)))
         return x
+
+
+
+class FeatureExtraction_16_search(nn.Module):
+    def __init__(self):
+        super(FeatureExtraction_16_search, self).__init__()
+        #将搜索出来的特征提取器固定
+        self.operations = ['conv_3x3', 'sep_conv_5x5', 'conv_5x5', 'sep_conv_5x5', 'dil_conv_3x3_8', 'dil_conv_3x3_8']
+        self.enc = nn.ModuleList()
+        self.enc.append(ModelCell(self.operations[0], 1, 16, 2))  # 0 (in_channels, out_channels, stride=1)
+        self.enc.append(ModelCell(self.operations[1], 16, 16, 1))  # 1
+        self.enc.append(ModelCell(self.operations[2], 16, 16, 1))  # 2
+        self.enc.append(ModelCell(self.operations[3], 16, 32, 2))  # 3
+        self.enc.append(ModelCell(self.operations[4], 32, 32, 1))  # 4
+        self.enc.append(ModelCell(self.operations[5], 32, 32, 1))  # 5
+
+    def forward(self, src, tgt):
+        c11 = self.enc[2](self.enc[1](self.enc[0](src)))
+        c21 = self.enc[2](self.enc[1](self.enc[0](tgt)))
+        c12 = self.enc[5](self.enc[4](self.enc[3](c11)))
+        c22 = self.enc[5](self.enc[4](self.enc[3](c21)))
+        s0, t0, s1, t1 = c11, c21, c12, c22
+        return s0, t0, s1, t1
+
+
+class FeatureExtraction_16_train(nn.Module):
+    def __init__(self):
+        super(FeatureExtraction_16_train, self).__init__()
+        #将搜索出来的特征提取器固定
+        # self.genotype = Encoder_V3
+        self.operations = ['conv_3x3', 'sep_conv_5x5', 'conv_5x5', 'sep_conv_5x5', 'dil_conv_3x3_8', 'dil_conv_3x3_8']
+
+        self.enc = nn.ModuleList()
+        self.enc.append(ModelCell(self.operations[0], 1, 16, 2))  # 0 (in_channels, out_channels, stride=1)
+        self.enc.append(ModelCell(self.operations[1], 16, 16, 1))  # 1
+        self.enc.append(ModelCell(self.operations[2], 16, 16, 1))  # 2
+        self.enc.append(ModelCell(self.operations[3], 16, 32, 2))  # 3
+        self.enc.append(ModelCell(self.operations[4], 32, 32, 1))  # 4
+        self.enc.append(ModelCell(self.operations[5], 32, 32, 1))  # 5
+
+    def forward(self, src, tgt):
+        c11 = self.enc[2](self.enc[1](self.enc[0](src)))
+        c21 = self.enc[2](self.enc[1](self.enc[0](tgt)))
+        c12 = self.enc[5](self.enc[4](self.enc[3](c11)))
+        c22 = self.enc[5](self.enc[4](self.enc[3](c21)))
+        s0, t0, s1, t1 = c11, c21, c12, c22
+        return s0, t0, s1, t1
+
