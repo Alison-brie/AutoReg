@@ -16,6 +16,91 @@ from mind import MIND
 from torch import Tensor
 
 
+class LossFunction_mpr(nn.Module):
+  def __init__(self, shape):
+    super(LossFunction_mpr, self).__init__()
+
+    self.shape = shape
+    self.ncc_loss = ncc_loss()
+    self.mind_loss =MIND()
+    self.gradient_loss = gradient_loss()
+    self.multi_loss = multi_loss(self.shape)
+
+  def forward(self, y, tgt, src, flow, flow1, flow2,
+              hyper_1=10, hyper_2=15, hyper_3=3.2, hyper_4=0.8, hyper_5=0.5):
+    ncc = self.ncc_loss(tgt, y)
+    mind = self.mind_loss(tgt,y)
+    grad = self.gradient_loss(flow)
+    multi = self.multi_loss(src, tgt, flow1, flow2, hyper_3, hyper_4, hyper_5)
+    loss = multi + hyper_1 * (hyper_5*ncc + (1-hyper_5)*mind) + hyper_2 * grad
+    return loss, ncc, mind, grad
+
+
+class multi_loss(nn.Module):
+  def __init__(self, shape):
+    super(multi_loss, self).__init__()
+
+    inshape = shape
+    down_shape2 = [int(d / 4) for d in inshape]
+    down_shape1 = [int(d / 2) for d in inshape]
+    self.ncc_loss = ncc_loss()
+    self.mind_loss = MIND()
+    self.gradient_loss = gradient_loss()
+    self.spatial_transform_1 = SpatialTransformer(volsize=down_shape1)
+    self.spatial_transform_2 = SpatialTransformer(volsize=down_shape2)
+    self.resize_1 = ResizeTransform(2, len(inshape))
+    self.resize_2 = ResizeTransform(4, len(inshape))
+
+  def forward(self, src, tgt, flow1, flow2, hyper_3, hyper_4, hyper_5):
+    loss = 0.
+    zoomed_x1 = self.resize_1(tgt)
+    zoomed_x2 = self.resize_1(src)
+    warped_zoomed_x2 = self.spatial_transform_1(zoomed_x2, flow1)
+    loss += hyper_3 * hyper_5 * self.ncc_loss(warped_zoomed_x2, zoomed_x1, win=[7])+\
+            hyper_3 * (1-hyper_5) * self.mind_loss(warped_zoomed_x2, zoomed_x1)
+
+    zoomed_x1 = self.resize_2(tgt)
+    zoomed_x2 = self.resize_2(src)
+    warped_zoomed_x2 = self.spatial_transform_2(zoomed_x2, flow2)
+    loss += hyper_4 * hyper_5 * self.ncc_loss(warped_zoomed_x2, zoomed_x1, win=[5])+\
+            hyper_4 * (1-hyper_5) * self.mind_loss(warped_zoomed_x2, zoomed_x1)
+
+    return loss
+
+
+
+class multi_loss_lambda(nn.Module):
+  def __init__(self):
+    super(multi_loss_lambda, self).__init__()
+
+    inshape = shape
+    down_shape2 = [int(d / 4) for d in inshape]
+    down_shape1 = [int(d / 2) for d in inshape]
+    self.ncc_loss = ncc_loss()
+    self.mind_loss = MIND()
+    self.gradient_loss = gradient_loss()
+    self.spatial_transform_1 = SpatialTransformer(volsize=down_shape1)
+    self.spatial_transform_2 = SpatialTransformer(volsize=down_shape2)
+    self.resize_1 = ResizeTransform(2, len(inshape))
+    self.resize_2 = ResizeTransform(4, len(inshape))
+
+  def forward(self, src, tgt, flow1, flow2, hyper_1, hyper_2, hyper_3, hyper_4):
+    loss = 0.
+    zoomed_x1 = self.resize_1(tgt)
+    zoomed_x2 = self.resize_1(src)
+    warped_zoomed_x2 = self.spatial_transform_1(zoomed_x2, flow1)
+    loss += hyper_3 * (hyper_1 * self.ncc_loss(warped_zoomed_x2, zoomed_x1, win=[7]) + \
+                       hyper_2 * self.mind_loss(warped_zoomed_x2, zoomed_x1))
+
+    zoomed_x1 = self.resize_2(tgt)
+    zoomed_x2 = self.resize_2(src)
+    warped_zoomed_x2 = self.spatial_transform_2(zoomed_x2, flow2)
+    loss += hyper_4 *(hyper_1 * self.ncc_loss(warped_zoomed_x2, zoomed_x1, win=[5]) +  \
+                      hyper_2 * self.mind_loss(warped_zoomed_x2, zoomed_x1))
+
+    return loss
+
+
 class LossFunction_mind(nn.Module):
     def __init__(self):
         super(LossFunction_mind, self).__init__()
@@ -269,3 +354,48 @@ class Dice(nn.Module):
         bottom = torch.clamp((y_true + y_pred).sum(dim=vol_axes), min=1e-5)
         dice = torch.mean(top / bottom)
         return -dice
+
+
+def add_n(l):
+  res = l[0]
+  for i in range(1, len(l)):
+    res = torch.add(res, i)
+  return res
+
+
+def det3x3(M):
+  M = [[M[:, i, j] for j in range(3)] for i in range(3)]
+  return add_n([
+    M[0][0] * M[1][1] * M[2][2],
+    M[0][1] * M[1][2] * M[2][0],
+    M[0][2] * M[1][0] * M[2][1]
+  ]) - add_n([
+    M[0][0] * M[1][2] * M[2][1],
+    M[0][1] * M[1][0] * M[2][2],
+    M[0][2] * M[1][1] * M[2][0]
+  ])
+
+
+def elem_sym_polys_of_eigen_values(M):
+  M = [[M[:, i, j] for j in range(3)] for i in range(3)]
+  sigma1 = add_n([M[0][0], M[1][1], M[2][2]])
+
+  sigma2 = add_n([
+    M[0][0] * M[1][1],
+    M[1][1] * M[2][2],
+    M[2][2] * M[0][0]
+  ]) - add_n([
+    M[0][1] * M[1][0],
+    M[1][2] * M[2][1],
+    M[2][0] * M[0][2]
+  ])
+  sigma3 = add_n([
+    M[0][0] * M[1][1] * M[2][2],
+    M[0][1] * M[1][2] * M[2][0],
+    M[0][2] * M[1][0] * M[2][1]
+  ]) - add_n([
+    M[0][0] * M[1][2] * M[2][1],
+    M[0][1] * M[1][0] * M[2][2],
+    M[0][2] * M[1][1] * M[2][0]
+  ])
+  return sigma1, sigma2, sigma3
