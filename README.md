@@ -1,6 +1,6 @@
 # AutoReg
 
-This is the official code for "Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions" 
+This is the official code for "Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions" <https://arxiv.org/pdf/2203.06810>
 
 
 A successful registration algorithm, either derived from conventional energy optimization or deep networks requires tremendous efforts from computer experts
