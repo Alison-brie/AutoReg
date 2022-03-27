@@ -13,10 +13,6 @@ aforementioned problems, this paper proposes an automated learning registration 
 
 
 
-# Requirements
-
-> Python == 3.6.8 <br>
-
 
 
 
