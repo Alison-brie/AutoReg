@@ -12,6 +12,20 @@ aforementioned problems, this paper proposes an automated learning registration 
 </div>
 
 
+# Reference
+If you find our work useful in your research please consider citing our paper:
+
+@ARTICLE{10231109,
+  author={Fan, Xin and Li, Zi and Li, Ziyang and Wang, Xiaolin and Liu, Risheng and Luo, Zhongxuan and Huang, Hao},
+  journal={IEEE Transactions on Image Processing}, 
+  title={Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions}, 
+  year={2023},
+  volume={32},
+  number={},
+  pages={4880-4892},
+  doi={10.1109/TIP.2023.3307215}}
+
+
 
 
 
