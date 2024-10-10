@@ -6,6 +6,7 @@
 
 import os
 import sys
+import nibabel as nib
 base_dir = (os.path.dirname(os.path.dirname(os.path.abspath((__file__)))))
 sys.path.append(base_dir)
 
@@ -70,6 +71,12 @@ def test(gpu, data_dir, model_file):
         val = dice(warp_seg[0,0,:,:,:], mask_0)
         print('registered:', np.mean(val))
         val_list.append(np.mean(val))
+        
+        # Visualize the warped segment
+        hdr = nib.load(Source_image).header
+        array = hdr.get_qform(coded=False)
+        warped_image = nib.Nifti1Image(warp_seg.squeeze(), array)
+        nib.save(warped_image, os.path.join(save_data_dir, Source_image.split('\')[-1])
 
 
     print("affine-mean:", np.mean(val_affine_list))
@@ -87,5 +94,6 @@ if __name__ == "__main__":
     parser.add_argument("--gpu", type=str, default='0', help="gpu id")
     parser.add_argument("--data_dir", type=str, default='data/9-T2toT1_test_data_with_mask.npz')
     parser.add_argument("--model_file", type=str, default='MPRNet-T2-to-T1-singlemodel/399.ckpt')
+    parser.add_argument("--save_data_dir", type=str, default='data/warped_image')
     test(**vars(parser.parse_args()))
 
