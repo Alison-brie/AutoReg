@@ -1,6 +1,6 @@
-# AutoReg
+# Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions
 
-This is the official code for "Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions" (https://arxiv.org/pdf/2203.06810)
+This is the official code for "Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions" (IEEE TIP 2023).
 
 
 A successful registration algorithm, either derived from conventional energy optimization or deep networks requires tremendous efforts from computer experts
@@ -11,22 +11,24 @@ aforementioned problems, this paper proposes an automated learning registration 
 <img src=png/pipline-1.png width=100% />
 </div>
 
+## Prerequisites
+- `Python 3.6.8+`
+- `Pytorch 0.3.1`
+- `torchvision 0.2.0`
+- `NumPy`
+- `NiBabel`
 
-# Reference
-If you find our work useful in your research please consider citing our paper:
-
-@ARTICLE{10231109,
-  author={Fan, Xin and Li, Zi and Li, Ziyang and Wang, Xiaolin and Liu, Risheng and Luo, Zhongxuan and Huang, Hao},
-  journal={IEEE Transactions on Image Processing}, 
-  title={Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions}, 
-  year={2023},
-  volume={32},
-  number={},
-  pages={4880-4892},
-  doi={10.1109/TIP.2023.3307215}}
+## (Example) Training on the preprocessed OASIS dataset
+If you want to train on the preprocessed OASIS dataset in https://github.com/adalca/medical-datasets/blob/master/neurite-oasis.md. We have an example showing how to train on this dataset.
+Download the preprocessed OASIS dataset, unzip it and put it in "Data/OASIS".
 
 
+## Publication
+If you find this repository useful, please cite:
 
+- **Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions**  
+Fan, Xin and [Li, Zi](https://alison-brie.github.io/) and Li, Ziyang and Wang, Xiaolin and Liu, Risheng and Luo, Zhongxuan and Huang, Hao
+ IEEE TIP [eprint arXiv:2203.06810](https://arxiv.org/pdf/2203.06810)
 
-
-
+###### Keywords
+Keywords: Automated learning, medical Image Registration, NAS, convolutional neural networks
