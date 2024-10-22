@@ -27,8 +27,8 @@ Download the preprocessed OASIS dataset, unzip it and put it in "Data/OASIS".
 If you find this repository useful, please cite:
 
 - **Automated Learning for Deformable Medical Image Registration by Jointly Optimizing Network Architectures and Objective Functions**  
-Fan, Xin and [Li, Zi](https://alison-brie.github.io/) and Li, Ziyang and Wang, Xiaolin and Liu, Risheng and Luo, Zhongxuan and Huang, Hao
+Fan, Xin and [Li, Zi](https://alison-brie.github.io/) and Li, Ziyang and Wang, Xiaolin and Liu, Risheng and Luo, Zhongxuan and Huang, Hao.
  IEEE TIP [eprint arXiv:2203.06810](https://arxiv.org/pdf/2203.06810)
 
-###### Keywords
-Keywords: Automated learning, medical Image Registration, NAS, convolutional neural networks
+## Keywords
+Automated learning, medical Image Registration, hyperparameter learning, convolutional neural networks
