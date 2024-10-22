@@ -31,4 +31,4 @@ Fan, Xin and [Li, Zi](https://alison-brie.github.io/) and Li, Ziyang and Wang, X
  IEEE TIP [eprint arXiv:2203.06810](https://arxiv.org/pdf/2203.06810)
 
 ## Keywords
-Automated learning, medical Image Registration, hyperparameter learning, convolutional neural networks
+Automated learning, medical image registration, hyperparameter learning, convolutional neural networks
